@@ -21,6 +21,20 @@ pipeline {
 
 
         stage('terraform init'){
+            
+            steps{
+                
+                    sh '''
+                    pwd
+                    terraform init
+                    '''
+            
+            }
+            
+        }
+
+
+        stage('terraform init'){
             when {
                 branch eks-cluster-terraform
             }
