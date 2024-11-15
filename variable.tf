@@ -11,16 +11,16 @@ variable "node-groups" {
   type = list(map(string))
   default = [{
     name = "my-instance"
-    desired_size = 2
+    desired_size = 1
     max_size     = 3
-    min_size     = 2
+    min_size     = 1
     instance_type = "t2.medium"
   },
   {
     name = "my-instance2"
-    desired_size = 2
+    desired_size = 0
     max_size     = 3
-    min_size     = 2
+    min_size     = 0
     instance_type = "t2.medium"
   }
   ]
