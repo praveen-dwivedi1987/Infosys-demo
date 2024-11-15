@@ -23,53 +23,31 @@ pipeline {
 
     
         stage('Docker Image Push : ECR '){
-         
             steps{
-               script{
-                   
-                    sh """
+                sh """
                    aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${region}.amazonaws.com
                    sudo docker push ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO_NAMEe}:latest
                   """
                }
-            }
         }   
 
         stage('Connect to EKS '){
-            
-        steps{
-
-            script{
-
+            steps{
                 sh """
                 aws configure set region "${region}"
                 aws eks --region ${region} update-kubeconfig --name ${cluster}
                 """
             }
-        }
         } 
 
         stage('Deployment on EKS Cluster'){
             steps{
-                script{
-                  
-                  def apply = false
-
-                  try{
-                    input message: 'please confirm to deploy on eks', ok: 'Ready to apply the config ?'
-                    apply = true
-                  }catch(err){
-                    apply= false
-                    currentBuild.result  = 'UNSTABLE'
-                  }
-                  if(apply){
-
                     sh """
-                      kubectl apply -f .
+                     kubectl apply -f .
                     """
                   }
-                }
-            }
+                
+            
         }
     }
 
