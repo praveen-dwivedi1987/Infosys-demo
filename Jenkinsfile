@@ -1,34 +1,36 @@
 pipeline {
     agent {label 'terraform-agent'}
 
-    parameters{
+    
 
-        
-        string(name: 'aws_account_id', description: " AWS Account ID", defaultValue: '471112682780')
-        string(name: 'Region', description: "Region of ECR", defaultValue: 'us-east-1')
-        string(name: 'ECR_REPO_NAME', description: "name of the ECR", defaultValue: 'infosysdemo/custome-nginxe')
-        string(name: 'cluster', description: "name of the EKS Cluster", defaultValue: 'my-cluster')
+    environment {
+        aws_account_id = '471112682780'
+        region    = 'us-east-1'
+        ECR_REPO_NAME = 'infosysdemo/custome-nginx'
+        cluster = 'my-cluster'
     }
-
 
     stages {
         
         stage('Docket build') {
             steps {
                 sh '''
-                docker build -t ${params.ECR_REPO_NAME} .
-                docker tag ${params.ECR_REPO_NAME}:latest ${params.aws_account_id}.dkr.ecr.${params.region}.amazonaws.com/${params.ECR_REPO_NAME}:latest
+                docker build -t ${ECR_REPO_NAME} .
+                docker tag ${ECR_REPO_NAME}:latest ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${params.ECR_REPO_NAME}:latest
                 '''
             }
         }
 
     
         stage('Docker Image Push : ECR '){
-         when { expression {  params.action == 'create' } }
+         
             steps{
                script{
                    
-                    dockerImagePush("${params.aws_account_id}","${params.Region}","${params.ECR_REPO_NAME}")
+                    sh """
+                   aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${region}.amazonaws.com
+                   docker push ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO_NAMEe}:latest
+                  """
                }
             }
         }   
