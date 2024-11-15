@@ -34,27 +34,9 @@ pipeline {
         }
 
 
-        stage('terraform init'){
-            when {
-                branch eks-cluster-terraform
-            }
-            steps{
-                
-                    sh '''
-                    pwd
-                    terraform init
-                    '''
-            
-            }
-            
-        }
-
-        
+               
 
         stage('trivy secret scan'){
-            when {
-                branch eks-cluster-terraform
-            }
             steps{
                 sh '''
                  trivy fs --scanners misconfig,secret .
@@ -66,21 +48,15 @@ pipeline {
         }
 
         stage('terraform plan'){
-            when {
-                branch eks-cluster-terraform
-            }
             steps{
                 sh '''                             
                     terraform plan -out tf.plan
 t                   terraform show -no-color tf.plan > tfplan.txt
                     '''
-                }
+            }
         }
 
         stage('terraform apply'){
-            when {
-                branch eks-cluster-terraform
-            }
             steps{
                 
                     sh '''
