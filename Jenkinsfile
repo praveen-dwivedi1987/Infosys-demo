@@ -45,7 +45,7 @@ pipeline {
             steps{
                 sh '''                             
                     terraform plan -out tf.plan
-t                   terraform show -no-color tf.plan > tfplan.txt
+                    terraform show -no-color tf.plan > tfplan.txt
                     '''
             }
         }
