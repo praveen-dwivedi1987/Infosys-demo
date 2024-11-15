@@ -15,8 +15,8 @@ pipeline {
         stage('Docket build') {
             steps {
                 sh '''
-                docker build -t ${ECR_REPO_NAME} .
-                docker tag ${ECR_REPO_NAME}:latest ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${params.ECR_REPO_NAME}:latest
+                sudo docker build -t ${ECR_REPO_NAME} .
+                sudo docker tag ${ECR_REPO_NAME}:latest ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${params.ECR_REPO_NAME}:latest
                 '''
             }
         }
@@ -29,7 +29,7 @@ pipeline {
                    
                     sh """
                    aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${region}.amazonaws.com
-                   docker push ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO_NAMEe}:latest
+                   sudo docker push ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO_NAMEe}:latest
                   """
                }
             }
