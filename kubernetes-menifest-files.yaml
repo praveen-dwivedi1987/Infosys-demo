@@ -16,7 +16,7 @@ spec:
       - name: infosys-demo
         image: 471112682780.dkr.ecr.us-east-1.amazonaws.com/infosysdemo/custome-nginx:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 
 ---
 apiVersion: v1
@@ -29,5 +29,5 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: 8080
+    targetPort: 80
   type: LoadBalancer
