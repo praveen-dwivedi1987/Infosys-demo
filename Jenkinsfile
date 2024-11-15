@@ -25,7 +25,7 @@ pipeline {
         stage('Docker Image Push : ECR '){
             steps{
                 sh """
-                   sudu aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${region}.amazonaws.com
+                   sudo aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${region}.amazonaws.com
                    sudo docker push ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO_NAME}:latest
                   """
                }
