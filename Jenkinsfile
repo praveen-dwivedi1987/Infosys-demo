@@ -43,7 +43,7 @@ pipeline {
         stage('Deployment on EKS Cluster'){
             steps{
                     sh """
-                     kubectl apply -f .
+                     kubectl apply -f kubernetes-menifest-files.yaml
                     """
                   }
                 
