@@ -54,7 +54,7 @@ pipeline {
             steps{
                 
                     sh '''
-                    terraform apply "tf.plan" -auto-approve
+                    terraform apply "tf.plan"
                     '''
             }
         }
