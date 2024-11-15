@@ -20,21 +20,15 @@ pipeline {
         }
 
 
-        stage('terraform init'){
+        stage('terraform blank init'){
             
             steps{
                 
-                    sh '''
-                    pwd
-                    terraform init
-                    '''
+                    sh ''' terraform init '''
             
             }
             
         }
-
-
-               
 
         stage('trivy secret scan'){
             steps{
