@@ -13,7 +13,13 @@ pipeline {
             }
         }
 
-        
+        stage ('files check'){
+            steps{
+                sh '''ls -lhrt'''
+            }
+        }
+
+
         stage('terraform init'){
             when {
                 branch eks-cluster-terraform
