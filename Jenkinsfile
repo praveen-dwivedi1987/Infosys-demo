@@ -20,34 +20,18 @@ pipeline {
         }
 
 
-        stage('terraform init'){
+        stage('terraform blank init'){
             
             steps{
                 
-                    sh '''
-                    pwd
-                    terraform init
-                    '''
+                    sh ''' terraform init '''
             
             }
             
         }
 
 
-        stage('terraform init'){
-            when {
-                branch eks-cluster-terraform
-            }
-            steps{
-                
-                    sh '''
-                    pwd
-                    terraform init
-                    '''
-            
-            }
-            
-        }
+        
 
         
 
