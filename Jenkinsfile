@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh '''
                 sudo docker build -t ${ECR_REPO_NAME} .
-                sudo docker tag ${ECR_REPO_NAME}:latest ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${params.ECR_REPO_NAME}:latest
+                sudo docker tag ${ECR_REPO_NAME}:latest ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO_NAME}:latest
                 '''
             }
         }
@@ -36,14 +36,14 @@ pipeline {
         }   
 
         stage('Connect to EKS '){
-            when { expression {  params.action == 'create' } }
+            
         steps{
 
             script{
 
                 sh """
-                aws configure set region "${params.Region}"
-                aws eks --region ${params.Region} update-kubeconfig --name ${params.cluster}
+                aws configure set region "${region}"
+                aws eks --region ${region} update-kubeconfig --name ${cluster}
                 """
             }
         }
