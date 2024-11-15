@@ -34,8 +34,8 @@ pipeline {
         stage('Connect to EKS '){
             steps{
                 sh """
-                sudo aws configure set region "${region}"
-                sudo aws eks --region ${region} update-kubeconfig --name ${cluster}
+                aws configure set region "${region}"
+                aws eks --region ${region} update-kubeconfig --name ${cluster}
                 """
             }
         } 
