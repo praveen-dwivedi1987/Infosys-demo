@@ -40,7 +40,7 @@ pipeline {
                 """
             }
         } 
-
+/*
         stage('install Datadog agent '){
             steps{
                 sh """
@@ -50,7 +50,7 @@ pipeline {
                 """
             }
         } 
-
+*/
         stage('Deploy custome image on EKS Cluster'){
             steps{
                     sh """
