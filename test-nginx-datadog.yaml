@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+data:
+  status.conf: |
+    server {
+      listen 81;
+
+      location /nginx_status {
+        stub_status on;
+      }
+
+      location / {
+        return 404;
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: test
+  name: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: test
+      annotations:
+        ad.datadoghq.com/nginx.logs: '[{"source":"nginx","service":"nginx"}]'
+        ad.datadoghq.com/nginx.checks: |
+         {
+            "nginx": {
+              "init_config": {},
+              "instances": [
+                {
+                  "nginx_status_url":"http://%%host%%:81/nginx_status/"
+                }
+              ]
+            }
+          }
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 81
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d/status.conf
+          subPath: status.conf
+          readOnly: true
+          name: "config"
+      volumes:
+    - name: "config"
+      configMap:
+          name: "nginx-conf"

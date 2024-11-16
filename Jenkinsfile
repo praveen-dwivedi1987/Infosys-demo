@@ -8,6 +8,7 @@ pipeline {
         region    = 'us-east-1'
         ECR_REPO_NAME = 'infosysdemo/custome-nginx'
         cluster = 'my-cluster'
+        dd_api_key = credentials('dd_api_key')
     }
 
     stages {
@@ -40,7 +41,17 @@ pipeline {
             }
         } 
 
-        stage('Deployment on EKS Cluster'){
+        stage('install Datadog agent '){
+            steps{
+                sh """
+                helm repo add datadog https://helm.datadoghq.com
+                helm repo update
+                helm install datadog-agent   -f custom-value.yaml   --set datadog.apiKey=${dd_api_key} --set datadog.site=us5.datadoghq.com  datadog/datadog
+                """
+            }
+        } 
+
+        stage('Deploy custome image on EKS Cluster'){
             steps{
                     sh """
                      kubectl apply -f kubernetes-menifest-files.yaml

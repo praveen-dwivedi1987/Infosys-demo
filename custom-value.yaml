@@ -1,0 +1,13 @@
+datadog:
+  clusterName: kind-kind-cluster
+  apm:
+    portEnabled: true
+  logs:
+    enabled: true
+    containerCollectAll: true
+  processAgent:
+    processCollection: true
+  serviceMonitoring:
+    enabled: true
+  kubelet:
+    tlsVerify: false
