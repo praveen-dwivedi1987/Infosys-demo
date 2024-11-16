@@ -30,8 +30,8 @@ spec:
       labels:
         app: infosys-demo
       annotations:
-        ad.datadoghq.com/nginx.logs: '[{"source":"nginx","service":"nginx"}]'
-        ad.datadoghq.com/nginx.checks: |
+        ad.datadoghq.com/infosys-demo.logs: '[{"source":"nginx","service":"nginx"}]'
+        ad.datadoghq.com/infosys-demo.checks: |
          {
             "nginx": {
               "init_config": {},
