@@ -32,6 +32,14 @@ pipeline {
                }
         }   
 
+        stage('Scan ECR Image '){
+            steps{
+                sh """
+                   trivy image --severity HIGH,CRITICAL ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/${ECR_REPO_NAME}:latest
+                  """
+               }
+        }
+
         stage('Connect to EKS '){
             steps{
                 sh """
@@ -40,7 +48,7 @@ pipeline {
                 """
             }
         } 
-/*
+
         stage('install Datadog agent '){
             steps{
                 sh """
@@ -50,7 +58,7 @@ pipeline {
                 """
             }
         } 
-*/
+
         stage('Deploy custome image on EKS Cluster'){
             steps{
                     sh """
